@@ -22,12 +22,26 @@ export default function Technologies() {
           {technologies.map((tech, index) => (
             <motion.div
               key={index}
-              whileHover={{ scale: 1.05 }}
-              className="flex flex-col items-center p-6 bg-white rounded-xl shadow-md"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              whileHover={{
+                scale: 1.1,
+                boxShadow: "0px 15px 30px rgba(0, 0, 0, 0.1)",
+                backgroundColor: "#F7FAFC"
+              }}
+              className="relative flex flex-col items-center p-6 bg-white rounded-xl shadow-md cursor-pointer transform transition-all"
             >
-              <div className={`p-3 rounded-full ${tech.color}`}>
+              {/* Animated Icon */}
+              <motion.div
+                whileHover={{ rotate: 360, scale: 1.2 }}
+                transition={{ duration: 0.5 }}
+                className={`p-3 rounded-full ${tech.color}`}
+              >
                 <tech.icon className="h-6 w-6 text-white" />
-              </div>
+              </motion.div>
+
+              {/* Technology Name */}
               <h3 className="mt-4 font-semibold text-gray-900">{tech.name}</h3>
             </motion.div>
           ))}

@@ -7,7 +7,7 @@ import { GraduationCap } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <div className="relative min-h-screen bg-gradient-to-b from-green-50 to-white">
+    <div className="relative min-h-screen bg-gradient-to-t from-green-50 to-green-200">
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-white/30 backdrop-blur-sm" />
       </div>
