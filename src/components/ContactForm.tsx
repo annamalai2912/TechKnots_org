@@ -10,6 +10,10 @@ const ContactForm = () => {
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
+      if (file.size > 2 * 1024 * 1024) {
+        alert("File size exceeds 2MB. Please upload a smaller image.");
+        return;
+      }
       const reader = new FileReader();
       reader.onload = (event) => {
         setProfilePic(event.target.result);
@@ -48,7 +52,7 @@ const ContactForm = () => {
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
-      pdf.save("techknots_profile.pdf");
+      pdf.save("student_profile.pdf");
     });
   };
 
@@ -65,44 +69,122 @@ const ContactForm = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-lg shadow-lg">
             <h2 className="text-2xl font-bold mb-4 text-green-700">
-              Join Our Student Club
+              Student Club Membership Form
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <input placeholder="Name" name="name" required className="input" />
-              <input placeholder="Email" name="email" required className="input" />
-              <input placeholder="College" name="college" required className="input" />
-              <select name="year" required className="input">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-              </select>
-              <input placeholder="Department" name="department" required className="input" />
-              <select name="district" required className="input">
-                {districts.map((district) => (
-                  <option key={district}>{district}</option>
-                ))}
-              </select>
-              <select name="interest" required className="input">
-                <option>AI</option>
-                <option>IoT</option>
-                <option>Robotics</option>
-                <option>Others</option>
-              </select>
-              <input placeholder="Contact" name="contact" required className="input" />
-              <select name="gender" required className="input">
-                <option>Male</option>
-                <option>Female</option>
-                <option>Other</option>
-              </select>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                className="block w-full text-gray-700 border border-gray-300 rounded-lg p-2"
-              />
+              <label className="block text-sm font-medium text-gray-700">
+                Full Name
+                <input
+                  name="name"
+                  type="text"
+                  placeholder="Enter your full name"
+                  required
+                  className="input"
+                />
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Email Address
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  required
+                  className="input"
+                />
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                College Name
+                <input
+                  name="college"
+                  type="text"
+                  placeholder="Enter your college name"
+                  required
+                  className="input"
+                />
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Year of Study
+                <select name="year" required className="input">
+                  <option value="" disabled selected>
+                    Select your year of study
+                  </option>
+                  <option value="1">1st Year</option>
+                  <option value="2">2nd Year</option>
+                  <option value="3">3rd Year</option>
+                  <option value="4">4th Year</option>
+                </select>
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Department
+                <input
+                  name="department"
+                  type="text"
+                  placeholder="Enter your department"
+                  required
+                  className="input"
+                />
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                District
+                <select name="district" required className="input">
+                  <option value="" disabled selected>
+                    Select your district
+                  </option>
+                  {districts.map((district) => (
+                    <option key={district} value={district}>
+                      {district}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Area of Interest
+                <select name="interest" required className="input">
+                  <option value="" disabled selected>
+                    Select your area of interest
+                  </option>
+                  <option value="AI">Artificial Intelligence</option>
+                  <option value="IoT">Internet of Things</option>
+                  <option value="Robotics">Robotics</option>
+                  <option value="Others">Others</option>
+                </select>
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Contact Number
+                <input
+                  name="contact"
+                  type="tel"
+                  placeholder="Enter your contact number"
+                  required
+                  className="input"
+                />
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Gender
+                <select name="gender" required className="input">
+                  <option value="" disabled selected>
+                    Select your gender
+                  </option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </label>
+              <label className="block text-sm font-medium text-gray-700">
+                Upload Profile Picture (Max: 2MB)
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageUpload}
+                  className="block w-full text-gray-700 border border-gray-300 rounded-lg p-2"
+                />
+              </label>
               <div className="flex justify-end gap-3">
-                <button type="button" onClick={() => setIsOpen(false)} className="button">
+                <button
+                  type="button"
+                  onClick={() => setIsOpen(false)}
+                  className="button"
+                >
                   Cancel
                 </button>
                 <button type="submit" className="button-primary">
@@ -127,11 +209,17 @@ const ContactForm = () => {
             />
           </div>
           <div className="text-center mt-4">
-            <h2 className="text-2xl font-bold text-green-700">{profileData.name}</h2>
-            <p className="text-gray-500">{profileData.college}, Year {profileData.year}</p>
+            <h2 className="text-2xl font-bold text-green-700">
+              {profileData.name}
+            </h2>
+            <p className="text-gray-500">
+              {profileData.college}, Year {profileData.year}
+            </p>
             <p className="text-gray-500">Department: {profileData.department}</p>
             <p className="text-gray-500">District: {profileData.district}</p>
-            <p className="text-green-600 font-medium">Interest: {profileData.interest}</p>
+            <p className="text-green-600 font-medium">
+              Interest: {profileData.interest}
+            </p>
             <p className="text-gray-500">Contact: {profileData.contact}</p>
             <p className="text-gray-500">Email: {profileData.email}</p>
             <p className="text-gray-500">Gender: {profileData.gender}</p>
