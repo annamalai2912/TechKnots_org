@@ -5,32 +5,35 @@ const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     message: '',
+    file: null,
   });
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({
     name: '',
     email: '',
+    phone: '',
     message: '',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple validation
-    const newErrors = { name: '', email: '', message: '' };
+    const newErrors = { name: '', email: '', phone: '', message: '' };
     if (!formData.name) newErrors.name = 'Name is required.';
     if (!formData.email) newErrors.email = 'Email is required.';
+    if (!formData.phone) newErrors.phone = 'Phone number is required.';
     if (!formData.message) newErrors.message = 'Message is required.';
     setErrors(newErrors);
 
-    if (!newErrors.name && !newErrors.email && !newErrors.message) {
-      setLoading(true); // Start loading when the form is submitted
+    if (!newErrors.name && !newErrors.email && !newErrors.phone && !newErrors.message) {
+      setLoading(true);
       setTimeout(() => {
         console.log(formData);
         setSubmitted(true);
-        setLoading(false); // End loading after submission
-      }, 2000); // Simulate network request delay
+        setLoading(false);
+      }, 2000);
     }
   };
 
@@ -38,159 +41,172 @@ const Contact = () => {
     setFormData({
       name: '',
       email: '',
+      phone: '',
       message: '',
+      file: null,
     });
     setErrors({
       name: '',
       email: '',
+      phone: '',
       message: '',
     });
     setSubmitted(false);
   };
 
   return (
-    <div className="min-h-screen bg-white py-20 px-4 relative">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gray-50 py-20 px-4 relative">
+      <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16">
           <motion.h1
-            className="text-5xl font-bold text-green-500 mb-4 tracking-wider"
+            className="text-4xl font-bold text-green-500 mb-4"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
           >
-            Let's Get in Touch
+            Contact Us
           </motion.h1>
           <motion.p
-            className="text-green-600 max-w-2xl mx-auto text-xl"
+            className="text-green-600 text-lg"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.3 }}
           >
-            We’d love to hear from you. Reach out with your questions, comments, or ideas!
+            We’d love to hear from you. Please fill out the form below.
           </motion.p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12 relative">
-          {/* Left side - Contact Form */}
+        <div className="grid md:grid-cols-2 gap-8">
           <form
             onSubmit={handleSubmit}
-            className="space-y-8 bg-white shadow-xl rounded-lg p-10 w-full transform transition duration-500 ease-in-out hover:scale-105 relative z-10"
-          >
-            {/* Name Input */}
+            className="bg-white shadow-md rounded-lg p-8 space-y-6">
+
             <motion.div
-              className="relative"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              transition={{ duration: 0.5 }}
             >
-              <label className="absolute left-4 top-2 text-sm font-medium text-green-500 transition-all duration-300 ease-in-out">
-                Name
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Name</label>
               <input
                 type="text"
-                required
-                className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
+                className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
-              {errors.name && <span className="text-red-500 text-xs">{errors.name}</span>}
+              {errors.name && <span className="text-red-500 text-sm">{errors.name}</span>}
             </motion.div>
 
-            {/* Email Input */}
             <motion.div
-              className="relative"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.7 }}
+              transition={{ duration: 0.6 }}
             >
-              <label className="absolute left-4 top-2 text-sm font-medium text-green-500 transition-all duration-300 ease-in-out">
-                Email
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Email</label>
               <input
                 type="email"
-                required
-                className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
+                className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               />
-              {errors.email && <span className="text-red-500 text-xs">{errors.email}</span>}
+              {errors.email && <span className="text-red-500 text-sm">{errors.email}</span>}
             </motion.div>
 
-            {/* Message Textarea */}
             <motion.div
-              className="relative"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.9 }}
+              transition={{ duration: 0.7 }}
             >
-              <label className="absolute left-4 top-2 text-sm font-medium text-green-500 transition-all duration-300 ease-in-out">
-                Message
-              </label>
+              <label className="block text-sm font-medium text-gray-700">Phone</label>
+              <input
+                type="tel"
+                className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+              />
+              {errors.phone && <span className="text-red-500 text-sm">{errors.phone}</span>}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <label className="block text-sm font-medium text-gray-700">Message</label>
               <textarea
-                required
                 rows={4}
-                className="w-full px-4 py-3 border border-green-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 transition duration-200"
+                className="mt-1 block w-full px-4 py-2 border rounded-md focus:ring-2 focus:ring-green-500"
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               />
-              {errors.message && <span className="text-red-500 text-xs">{errors.message}</span>}
+              <div className="text-right text-sm text-gray-500 mt-1">
+                {formData.message.length} / 500
+              </div>
+              {errors.message && <span className="text-red-500 text-sm">{errors.message}</span>}
             </motion.div>
 
-            {/* Submit and Clear Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9 }}
+            >
+              <label className="block text-sm font-medium text-gray-700">Attachment (optional)</label>
+              <input
+                type="file"
+                className="mt-1 block w-full px-4 py-2 border rounded-md"
+                onChange={(e) => setFormData({ ...formData, file: e.target.files?.[0] || null })}
+              />
+            </motion.div>
+
             <div className="flex space-x-4 justify-center">
               <motion.button
                 type="submit"
-                className="py-3 px-6 bg-green-500 text-white rounded-lg hover:bg-green-600 transition duration-200 w-1/2"
-                disabled={loading} // Disable button while loading
+                className="py-3 px-6 bg-green-500 text-white rounded-lg hover:bg-green-600 w-1/2"
+                disabled={loading}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 1.2 }}
+                transition={{ duration: 1 }}
               >
-                {loading ? (
-                  <span>Submitting...</span>
-                ) : (
-                  <span>Send Message</span>
-                )}
+                {loading ? 'Submitting...' : 'Send Message'}
               </motion.button>
               <motion.button
                 type="button"
                 onClick={handleClear}
-                className="py-3 px-6 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition duration-200 w-1/2"
+                className="py-3 px-6 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 w-1/2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 1.4 }}
+                transition={{ duration: 1 }}
               >
                 Clear Form
               </motion.button>
             </div>
           </form>
 
-          {/* Right side - Image */}
-          <div className="space-y-6 absolute top-0 right-0 z-0 hidden md:block">
-            <motion.div
-              className="w-full h-full flex justify-center items-center"
+          <div className="hidden md:flex justify-center items-center">
+            <motion.img
+              src="/contact.jpg"
+              alt="Contact Us"
+              className="max-w-full h-auto rounded-lg shadow-md"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <img
-                src="/contact.jpg" // Local image inside the public/images folder
-                alt="Q&A Person"
-                className="max-w-full max-h-[400px] object-contain"
-              />
-            </motion.div>
+              transition={{ duration: 0.5 }}
+            />
           </div>
         </div>
 
-        {/* Success Message */}
         {submitted && (
           <motion.div
-            className="w-full mt-6 p-4 bg-green-200 text-green-700 rounded-lg text-center"
+            className="mt-8 p-4 bg-green-200 text-green-700 rounded-lg text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <p>Thank you for reaching out! We'll get back to you soon.</p>
+            <p>Thank you for contacting us! We will get back to you soon.</p>
+            <button
+              onClick={handleClear}
+              className="mt-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+            >
+              Go Back
+            </button>
           </motion.div>
         )}
       </div>
